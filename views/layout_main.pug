@@ -1,0 +1,24 @@
+html
+	head
+		meta(charset='utf-8')
+		link(rel='stylesheet' href='/styles/main.css')
+		title #{title}
+	body
+		.header
+			.logo
+				a(href='/') logo aqui
+			.nav
+				ul
+					li
+						a(href='/entrar') Entrar
+					li
+						a(href='/cadastrar') Cadastrar
+
+		h1 #{title}
+
+		.content
+			block content
+
+		.footer
+			include footer.pug
+

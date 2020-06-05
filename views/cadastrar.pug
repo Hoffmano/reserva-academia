@@ -1,0 +1,10 @@
+extends layout_main.pug
+
+block content
+	p Aqui √© pr se cadastrar no site...
+	form(method='POST')
+		input(type='text' placehonder='nome de usu√rio' name='user')
+		input(type='password' placeholder='senha' name='passwd')
+		input(type='email' placeholder='exemplo@exemplo.com' name='email')
+		input(type='submit')
+

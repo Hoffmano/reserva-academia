@@ -41,32 +41,4 @@ app.listen(port, () => {
 
 app.post("/entrar", urlencodedParser, (req, res) => {
 	console.log("tentando fazer login");
-	console.log(req.body);
-	let nomes = [];
-	knex.from("socio")
-		.select("nome")
-		.then((rows) => {
-			for (row of rows) {
-				nomes.push(`${row["nome"]}`);
-			}
-		});
-	res.render('entrar', {nomes: nomes})
-	return "okay";
-});
-
-// var con = mysql.createConnection({
-// 	host: "coccafukuda.ddns.net",
-// 	user: "bdtrab",
-// 	password: "I6#no#",
-// 	database: "BDTrab",
-// });
-
-var knex = require("knex")({
-	client: "mysql",
-	connection: {
-		host: "coccafukuda.ddns.net",
-		user: "bdtrab",
-		password: "I6#no#",
-		database: "BDTrab",
-	},
 });

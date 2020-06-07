@@ -1,8 +1,6 @@
 extends layout_main.pug
 
 block content
-	let nomes = #{nomes} 
-	
 	.content
 		h1#titulo_pagina Login
 		form(method='POST' action="/entrar")#login_form
@@ -10,6 +8,5 @@ block content
 			input(type='password' name='password' placeholder='Senha')
 			input(type='submit' value="Entrar")
 		
-		unless nomes==undefined
-			each val in nomes
-				li= 
+		each nome in nomes
+			li= nome['nome']

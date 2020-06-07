@@ -16,7 +16,13 @@ app.get("/", (req, res) => {
 });
 
 app.get("/entrar", (req, res) => {
-	res.render("entrar", { title: "Login" });
+	res.render("entrar", {
+		title: "Login",
+		nomes: [
+			'gabriel',
+			'mateus'
+		],
+	});
 });
 
 app.get("/cadastrar", (req, res) => {
@@ -40,18 +46,23 @@ app.listen(port, () => {
 });
 
 app.post("/entrar", urlencodedParser, (req, res) => {
-	console.log("tentando fazer login");
-	console.log(req.body);
-	let nomes = [];
+	let parametros = {
+		title: "Login",
+		nomes: [],
+	};
 	knex.from("socio")
 		.select("nome")
 		.then((rows) => {
 			for (row of rows) {
-				nomes.push(`${row["nome"]}`);
+				parametros.nomes.push(
+					{
+						nome: `${row['nome']}`
+					}
+				)	
 			}
+			console.log(parametros);
+			res.render("entrar", parametros);
 		});
-	res.render('entrar', {nomes: nomes})
-	return "okay";
 });
 
 // var con = mysql.createConnection({

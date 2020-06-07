@@ -1,0 +1,8 @@
+extends layout_main.pug
+
+block content
+    .content
+        h1#titulo_pagina Consultar disponibilidade da sala
+        form(method='POST')#login_form
+            input(type='text' placeholder='Sala' name='sala')
+            input(type='submit' value="Consultar")

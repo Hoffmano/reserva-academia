@@ -7,39 +7,17 @@ html {
 	background-color: #242222;
 	color: #ffffff;
 	width: 100vw;
+	min-height: 100vh;
+}
+
+body {
+	min-height: 100vh;
 }
 
 a {
 	text-decoration: none;
 	color: #000000;
-
 }
-
-.nav {
-	display: flex;
-	align-items: center;
-	width: 50%;
-}
-
-ul {
-	width: 100%;
-	display: flex;
-	justify-content: end;
-}
-
-li {
-	list-style: none;
-
-	margin-right: 5%;
-	font-size: 1.5rem;
-}
-
-.navbar {
-	background-color: #FE8607;
-	border-radius: 10px;
-	padding: 0 2% 0 2%;
-}
-
 
 .header {
 	width: 100%;
@@ -47,6 +25,27 @@ li {
 	display: flex;
 	justify-content: space-between;
 	background-color: #131212;
+}
+
+#navbar {
+	display: flex;
+	align-items: center;
+	width: 50%;
+}
+
+#navbar_list {
+	display: flex;
+	width: 100%;
+	justify-content: end;
+}
+
+.navbar_item {
+	list-style: none;
+	margin-right: 5%;
+	font-size: 1.5rem;
+	background-color: #fe8607;
+	border-radius: 10px;
+	padding: 0 2% 0 2%;
 }
 
 .logo {
@@ -60,4 +59,52 @@ li {
 
 #logo {
 	width: 100%;
+}
+
+#footer {
+	position: absolute;
+	bottom: 1%;
+	left: 50%;
+	transform: translate(-50%);
+}
+
+#login_form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+input {
+	text-align: center;
+	border-radius: 10px;
+	width: 50%;
+	margin: 1%;
+	font-size: 1.5rem;
+}
+
+.content {
+	margin: 5% 30% 0 30%;
+	text-align: justify;
+}
+
+h1 {
+	margin-bottom: 1%;
+}
+
+h2 {
+	margin-bottom: 1%;
+}
+
+p {
+	margin-bottom: 1%;
+}
+
+#objetivos_trabalho {
+	margin-left: 3%;
+	margin-bottom: 1%;
+}
+
+#titulo_pagina {
+	text-align: center;
 }

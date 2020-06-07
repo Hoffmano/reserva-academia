@@ -1,26 +1,9 @@
-html
-	head
-		title #{title}
-		meta(charset='utf-8')
-		meta(name="viewport", content="width=device-width, initial-scale=1.0")
-		link(rel='stylesheet' href='/styles/main.css')
-		link(rel='stylesheet' href='/styles/loader.css')
+doctype html
+
+html(lang='pt')
+	include head
 
 	body
-		.header
-			.logo
-				a(href='/')
-					img(id='logo' src="./images/logo.png", alt="Logo icone squash")
-			.nav
-				ul
-					li(class='navbar')
-						a(href='/') Home
-					li(class='navbar')
-						a(href='/entrar') Entrar
-					li(class='navbar')
-						a(href='/cadastrar') Cadastrar
-		.content
-			block content
-
-		.footer
-			include footer.pug
+		include header
+		block content
+		include footer

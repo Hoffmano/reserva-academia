@@ -1,0 +1,14 @@
+extends layout_main.pug
+
+block content
+    .content
+        h1#titulo_pagina Agendar
+        form(method='POST')#login_form
+            input(type='text' placeholder='Sala' name='sala')
+            h4.date Data
+            input.date(type='date' placeholder="Data" name='data')
+            h4 Início
+            input.date(type='time' name='hora')
+            h4 Duração
+            input.date(type='time' name='duracao')
+            input(type='submit' value="Agendar")

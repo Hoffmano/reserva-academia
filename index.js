@@ -30,7 +30,54 @@ app.get("/cadastrar", (req, res) => {
 });
 
 app.get("/consultar-sala", (req, res) => {
-	res.render("consultar_sala", { title: "Consultar sala" });
+	json = {
+		title: "Consultar sala",
+		reservas: [
+			{
+				socio: "Gabriel",
+				data: "03/01/2020",
+				inicio: "13:49",
+				duracao: "2",
+			},
+			{
+				socio: "Gabriel",
+				data: "03/01/2020",
+				inicio: "13:49",
+				duracao: "2",
+			},
+			{
+				socio: "Gabriel",
+				data: "03/01/2020",
+				inicio: "13:49",
+				duracao: "2",
+			},
+			{
+				socio: "Gabriel",
+				data: "03/01/2020",
+				inicio: "13:49",
+				duracao: "2",
+			},
+			{
+				socio: "Gabriel",
+				data: "03/01/2020",
+				inicio: "13:49",
+				duracao: "2",
+			},
+			{
+				socio: "Gabriel",
+				data: "03/01/2020",
+				inicio: "13:49",
+				duracao: "2",
+			},
+			{
+				socio: "Gabriel",
+				data: "03/01/2020",
+				inicio: "13:49",
+				duracao: "2",
+			},
+		],
+	};
+	res.render("consultar_sala", json);
 });
 
 app.get("/agendar", (req, res) => {
@@ -65,12 +112,34 @@ app.post("/entrar", urlencodedParser, (req, res) => {
 		});
 });
 
-// var con = mysql.createConnection({
-// 	host: "coccafukuda.ddns.net",
-// 	user: "bdtrab",
-// 	password: "I6#no#",
-// 	database: "BDTrab",
-// });
+app.post("/consultar-sala", (req, res) => {
+	json = {
+		title: "Consultar sala",
+		reservas: [
+			{
+				socio: 'Gabriel',
+				data: '03/01/2020',
+				duracao: '2'
+			},
+			{
+				socio: 'Gabriel',
+				data: '03/01/2020',
+				duracao: '2'
+			},
+			{
+				socio: 'Gabriel',
+				data: '03/01/2020',
+				duracao: '2'
+			},
+			{
+				socio: 'Gabriel',
+				data: '03/01/2020',
+				duracao: '2'
+			}
+		]
+	};
+	res.render("consultar_sala", json);
+});
 
 var knex = require("knex")({
 	client: "mysql",

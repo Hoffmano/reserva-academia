@@ -1,0 +1,8 @@
+extends layout_main.pug
+
+block content
+    .content
+        h1#titulo_pagina Consultar sócio
+        form(method='POST')#login_form
+            input(type='text' placeholder='CPF' name='cpf')
+            input(type='submit' value="Colsultar")

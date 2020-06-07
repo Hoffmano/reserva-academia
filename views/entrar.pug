@@ -1,9 +1,15 @@
 extends layout_main.pug
 
 block content
-	p Aqui é pra entrar no site...
-	form(method='POST')
-		input(type='text' name='user')
-		input(type='password' name='passwd')
-		input(type='submit')
-
+	let nomes = #{nomes} 
+	
+	.content
+		h1#titulo_pagina Login
+		form(method='POST' action="/entrar")#login_form
+			input(type='text' name='user' placeholder="Nome de usuário")
+			input(type='password' name='password' placeholder='Senha')
+			input(type='submit' value="Entrar")
+		
+		unless nomes==undefined
+			each val in nomes
+				li= 

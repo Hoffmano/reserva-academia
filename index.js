@@ -2,6 +2,15 @@ const express = require("express");
 const path = require("path");
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
+const knex = require("knex")({
+	client: "mysql",
+	connection: {
+		host: "coccafukuda.ddns.net",
+		user: "bdtrab",
+		password: "I6#no#",
+		database: "BDTrab",
+	},
+});
 
 const app = express();
 const port = 3000;
@@ -68,52 +77,45 @@ app.post("/entrar", (req, res) => {
 app.use(express.urlencoded());
 app.use(express.json());
 
+
+
 app.post("/consultar-sala", (req, res) => {
 	json = {
 		title: "Consultar sala",
+		reservas: []
 	};
-	salas_dao = new Salas_DAO()
-	salas_dao.consultar(req.body.sala)
-	res.render("consultar_sala", salas_dao.json);
+	
+	console.log(req.body.sala);
+
+	const knex = require("knex")({
+		client: "mysql",
+		connection: {
+			host: "coccafukuda.ddns.net",
+			user: "bdtrab",
+			password: "I6#no#",
+			database: "BDTrab",
+		},
+	});
+
+	knex.from('quadra')
+		.where('quadra.id', Number(req.body.sala))
+		.join("reserva_quadra", "quadra.id", "=", "reserva_quadra.id_quadra")
+		.join("socio", "reserva_quadra.id_socio", "=", "socio.id")
+		.select("nome", "inicio", "duracao")
+		.then((rows) => {			
+			for (row of rows) {
+				console.log(json);
+				json.reservas.push({
+					socio: `${row["nome"]}`,
+					data: `${row["inicio"]}`,
+					duracao: `${row["duracao"]}`,
+				});
+			}
+
+			console.log(json);
+			
+			res.render("/consultar-sala", json);
+		});
 });
 
 
-class Salas_DAO {
-	constructor() {
-		this.json = {
-			title: "Consultar sala",
-			reservas: [],
-		};
-	}
-
-	consultar(sala) {
-		knex.from(sala)
-			.where(sala.id, sala)
-			.join("reserva_quadra", "sala.id", "=", "reserva_quadra.id_quadra")
-			.join('socio', 'id_socio', "=", 'socio.id')
-			.select('nome', 'inicio', 'duracao')
-			.then((rows) => {
-				for (row of rows) {
-					json.reservas.push({
-						socio: `${row["nome"]}`,
-						data: `${row["inicio"]}`,
-						duracao: `${row["duracao"]}`,
-					});
-					console.log('${row["nome"]}');
-					
-				}
-				console.log(parametros);
-				res.render("entrar", parametros);
-			});
-	}
-}
-
-var knex = require("knex")({
-	client: "mysql",
-	connection: {
-		host: "coccafukuda.ddns.net",
-		user: "bdtrab",
-		password: "I6#no#",
-		database: "BDTrab",
-	},
-});

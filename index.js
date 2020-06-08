@@ -8,6 +8,7 @@ const port = 3000;
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
+
 app.set("view engine", "pug");
 app.use(express.static("public"));
 
@@ -18,10 +19,6 @@ app.get("/", (req, res) => {
 app.get("/entrar", (req, res) => {
 	res.render("entrar", {
 		title: "Login",
-		nomes: [
-			'gabriel',
-			'mateus'
-		],
 	});
 });
 
@@ -32,50 +29,6 @@ app.get("/cadastrar", (req, res) => {
 app.get("/consultar-sala", (req, res) => {
 	json = {
 		title: "Consultar sala",
-		reservas: [
-			{
-				socio: "Gabriel",
-				data: "03/01/2020",
-				inicio: "13:49",
-				duracao: "2",
-			},
-			{
-				socio: "Gabriel",
-				data: "03/01/2020",
-				inicio: "13:49",
-				duracao: "2",
-			},
-			{
-				socio: "Gabriel",
-				data: "03/01/2020",
-				inicio: "13:49",
-				duracao: "2",
-			},
-			{
-				socio: "Gabriel",
-				data: "03/01/2020",
-				inicio: "13:49",
-				duracao: "2",
-			},
-			{
-				socio: "Gabriel",
-				data: "03/01/2020",
-				inicio: "13:49",
-				duracao: "2",
-			},
-			{
-				socio: "Gabriel",
-				data: "03/01/2020",
-				inicio: "13:49",
-				duracao: "2",
-			},
-			{
-				socio: "Gabriel",
-				data: "03/01/2020",
-				inicio: "13:49",
-				duracao: "2",
-			},
-		],
 	};
 	res.render("consultar_sala", json);
 });
@@ -92,54 +45,68 @@ app.listen(port, () => {
 	console.log("Site escutando em http://coccafukuda.ddns.net:${port}/");
 });
 
-app.post("/entrar", urlencodedParser, (req, res) => {
+app.post("/entrar", (req, res) => {
 	let parametros = {
 		title: "Login",
-		nomes: [],
+		// nomes: [],
 	};
-	knex.from("socio")
-		.select("nome")
-		.then((rows) => {
-			for (row of rows) {
-				parametros.nomes.push(
-					{
-						nome: `${row['nome']}`
-					}
-				)	
-			}
-			console.log(parametros);
-			res.render("entrar", parametros);
-		});
+	// knex.from("socio")
+	// 	.select("nome")
+	// 	.then((rows) => {
+	// 		for (row of rows) {
+	// 			parametros.nomes.push(
+	// 				{
+	// 					nome: `${row['nome']}`
+	// 				}
+	// 			)	
+	// 		}
+	// 		console.log(parametros);
+	// 		res.render("entrar", parametros);
+	// 	});
 });
+
+app.use(express.urlencoded());
+app.use(express.json());
 
 app.post("/consultar-sala", (req, res) => {
 	json = {
 		title: "Consultar sala",
-		reservas: [
-			{
-				socio: 'Gabriel',
-				data: '03/01/2020',
-				duracao: '2'
-			},
-			{
-				socio: 'Gabriel',
-				data: '03/01/2020',
-				duracao: '2'
-			},
-			{
-				socio: 'Gabriel',
-				data: '03/01/2020',
-				duracao: '2'
-			},
-			{
-				socio: 'Gabriel',
-				data: '03/01/2020',
-				duracao: '2'
-			}
-		]
 	};
-	res.render("consultar_sala", json);
+	salas_dao = new Salas_DAO()
+	salas_dao.consultar(req.body.sala)
+	res.render("consultar_sala", salas_dao.json);
 });
+
+
+class Salas_DAO {
+	constructor() {
+		this.json = {
+			title: "Consultar sala",
+			reservas: [],
+		};
+	}
+
+	consultar(sala) {
+		knex.from(sala)
+			.where(sala.id, sala)
+			.join("reserva_quadra", "sala.id", "=", "reserva_quadra.id_quadra")
+			.join('socio', 'id_socio', "=", 'socio.id')
+			.select('nome', 'inicio', 'duracao')
+			.then((rows) => {
+				for (row of rows) {
+					json.reservas.push({
+						socio: `${row["nome"]}`,
+						data: `${row["inicio"]}`,
+						duracao: `${row["duracao"]}`,
+					});
+					console.log('${row["nome"]}');
+					
+				}
+				console.log(parametros);
+				res.render("entrar", parametros);
+			});
+	}
+}
 
 var knex = require("knex")({
 	client: "mysql",

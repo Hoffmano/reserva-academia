@@ -6,3 +6,16 @@ block content
         form(method='POST')#login_form
             input(type='text' placeholder='CPF' name='cpf')
             input(type='submit' value="Colsultar")
+
+        table.table
+            tr.row
+                th Sala
+                th Data
+                th Inicio
+                th Duração
+            each row in reservas
+                tr.row
+                    td #{row.sala}
+                    td #{row.data}
+                    td #{row.inicio}
+                    td #{row.duracao}

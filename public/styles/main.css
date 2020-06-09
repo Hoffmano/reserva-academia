@@ -122,3 +122,8 @@ tr:nth-child(even) {background-color: #413939;}
 th,td{
 	text-align: center;
 }
+
+#identificador_sala{
+	text-align: center;
+	margin-top: 5%;
+}

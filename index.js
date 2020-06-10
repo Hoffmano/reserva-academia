@@ -1,7 +1,4 @@
 const express = require("express");
-const path = require("path");
-const mysql = require("mysql");
-const bodyParser = require("body-parser");
 const knex = require("knex")({
 	client: "mysql",
 	connection: {
@@ -15,7 +12,6 @@ const knex = require("knex")({
 const app = express();
 const port = 3000;
 
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 app.set("view engine", "pug");
 app.use(express.static("public"));
@@ -90,9 +86,7 @@ app.post("/consultar-sala", (req, res) => {
 		.select("nome", "inicio", "duracao")
 		.then((rows) => {
 			for (row of rows) {
-				// console.log(json);
 				const data = `${row["inicio"]}`.split(" ")
-				
 				json.reservas.push({
 					socio: `${row["nome"]}`,
 					data: data[2] + " de " + data[1] + 

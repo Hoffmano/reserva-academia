@@ -109,21 +109,27 @@ p {
 	text-align: center;
 }
 
-
-.table{
+.table {
 	margin-top: 5%;
 	border-radius: 10px;
 	border: #000000 1px solid;
 	width: 100%;
 }
 
-tr:nth-child(even) {background-color: #413939;}
+tr:nth-child(even) {
+	background-color: #413939;
+}
 
-th,td{
+th,
+td {
 	text-align: center;
 }
 
-#identificador_sala{
+#identificador_sala {
 	text-align: center;
 	margin-top: 5%;
+}
+
+#numero_sala {
+	-moz-appearance: textfield;
 }

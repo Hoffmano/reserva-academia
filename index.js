@@ -1,17 +1,10 @@
 const express = require("express");
-const knex = require("knex")({
-	client: "mysql",
-	connection: {
-		host: "coccafukuda.ddns.net",
-		user: "bdtrab",
-		password: "I6#no#",
-		database: "BDTrab",
-	},
-});
+const dao = require("./dao");
+
+knex = dao.getConnection()
 
 const app = express();
 const port = 3000;
-
 
 app.set("view engine", "pug");
 app.use(express.static("public"));
@@ -52,21 +45,7 @@ app.listen(port, () => {
 app.post("/entrar", (req, res) => {
 	let parametros = {
 		title: "Login",
-		// nomes: [],
 	};
-	// knex.from("socio")
-	// 	.select("nome")
-	// 	.then((rows) => {
-	// 		for (row of rows) {
-	// 			parametros.nomes.push(
-	// 				{
-	// 					nome: `${row['nome']}`
-	// 				}
-	// 			)
-	// 		}
-	// 		console.log(parametros);
-	// 		res.render("entrar", parametros);
-	// 	});
 });
 
 app.use(express.urlencoded());
@@ -78,22 +57,8 @@ app.post("/consultar-sala", (req, res) => {
 		sala: req.body.sala,
 		reservas: [],
 	};
-
-	knex.from("quadra")
-		.where("quadra.id", Number(req.body.sala))
-		.join("reserva_quadra", "quadra.id", "=", "reserva_quadra.id_quadra")
-		.join("socio", "reserva_quadra.id_socio", "=", "socio.id")
-		.select("nome", "inicio", "duracao")
-		.then((rows) => {
-			for (row of rows) {
-				const data = `${row["inicio"]}`.split(" ")
-				json.reservas.push({
-					socio: `${row["nome"]}`,
-					data: data[2] + " de " + data[1] + 
-					' de ' + data[3] + ' às ' + data[4],
-					duracao: `${row["duracao"]}`,
-				});
-			}			
-			res.render("consultar_sala", json);
-		});
+	json = dao.consultar_disponibilidade(json);
+	console.log(json.reservas);
+	
+	res.render("consultar_sala", json);
 });

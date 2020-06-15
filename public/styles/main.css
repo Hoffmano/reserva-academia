@@ -108,3 +108,28 @@ p {
 #titulo_pagina {
 	text-align: center;
 }
+
+.table {
+	margin-top: 5%;
+	border-radius: 10px;
+	border: #000000 1px solid;
+	width: 100%;
+}
+
+tr:nth-child(even) {
+	background-color: #413939;
+}
+
+th,
+td {
+	text-align: center;
+}
+
+#identificador_sala {
+	text-align: center;
+	margin-top: 5%;
+}
+
+#numero_sala {
+	-moz-appearance: textfield;
+}

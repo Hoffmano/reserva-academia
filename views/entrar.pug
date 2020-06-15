@@ -1,15 +1,13 @@
 extends layout_main.pug
 
 block content
-	let nomes = #{nomes} 
-	
 	.content
 		h1#titulo_pagina Login
-		form(method='POST' action="/entrar")#login_form
-			input(type='text' name='user' placeholder="Nome de usuário")
+		form(method='POST' action='/entrar')#login_form
+			input(type='text' name='user' placeholder='Nome de usuário')
 			input(type='password' name='password' placeholder='Senha')
-			input(type='submit' value="Entrar")
-		
-		unless nomes==undefined
-			each val in nomes
-				li= 
+			input(type='submit' value='Entrar')
+
+		if nomes != undefined
+			each nome in nomes
+				li= nome

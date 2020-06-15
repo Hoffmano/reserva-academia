@@ -4,5 +4,20 @@ block content
     .content
         h1#titulo_pagina Consultar disponibilidade da sala
         form(method='POST')#login_form
-            input(type='text' placeholder='Sala' name='sala')
+            input#numero_sala(type='number' placeholder='Sala' name='sala')
             input(type='submit' value="Consultar")
+
+        if sala
+            h2#identificador_sala Sala: #{sala}
+
+        if reservas
+            table.table
+                tr.row
+                    th Sócio
+                    th Data
+                    th Duração
+                each row in reservas
+                    tr.row
+                        td #{row.socio}
+                        td #{row.data}
+                        td #{row.duracao}

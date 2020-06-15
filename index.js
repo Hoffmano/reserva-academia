@@ -1,7 +1,6 @@
 const express = require("express");
 const dao = require("./dao");
 
-knex = dao.getConnection()
 
 const app = express();
 const port = 3000;

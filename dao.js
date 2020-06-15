@@ -1,15 +1,16 @@
-exports.getConnection = function getConnection() {
-	var knex = require("knex")({
-		client: "mysql",
-		connection: {
-			host: "coccafukuda.ddns.net",
-			user: "bdtrab",
-			password: "I6#no#",
-			database: "BDTrab",
-		},
-	});
-	return knex;
-};
+
+var knex = require("knex")({
+	client: "mysql",
+	connection: {
+		host: "coccafukuda.ddns.net",
+		user: "bdtrab",
+		password: "I6#no#",
+		database: "BDTrab",
+	},
+});
+
+
+
 
 exports.consultar_disponibilidade = function consultar_disponibilidade(json) {
 	return new Promise((resolve, reject, ) => {

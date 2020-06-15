@@ -1,17 +1,19 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const knex = require("knex")({
 	client: "mysql",
 	connection: {
-		host: "coccafukuda.ddns.net",
+		host: "192.168.15.10",
 		user: "bdtrab",
 		password: "I6#no#",
 		database: "BDTrab",
 	},
 });
 
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
+
 const app = express();
 const port = 3000;
-
 
 app.set("view engine", "pug");
 app.use(express.static("public"));
@@ -21,9 +23,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/entrar", (req, res) => {
-	res.render("entrar", {
-		title: "Login",
-	});
+	res.render("entrar", { title: "Login" });
 });
 
 app.get("/cadastrar", (req, res) => {
@@ -31,10 +31,7 @@ app.get("/cadastrar", (req, res) => {
 });
 
 app.get("/consultar-sala", (req, res) => {
-	json = {
-		title: "Consultar sala",
-	};
-	res.render("consultar_sala", json);
+	res.render("consultar_sala", { title: "Consultar sala" });
 });
 
 app.get("/agendar", (req, res) => {
@@ -42,41 +39,31 @@ app.get("/agendar", (req, res) => {
 });
 
 app.get("/consultar-socio", (req, res) => {
-	res.render("consultar_socio", { title: "Consultar sócio" });
+	res.render("consultar_socio", { title: "Consultar sóco" });
 });
 
-app.listen(port, () => {
-	console.log("Follow link: http://localhost:3000");
-});
-
-app.post("/entrar", (req, res) => {
+app.post("/entrar", urlencodedParser, (req, res) => {
 	let parametros = {
 		title: "Login",
-		// nomes: [],
+		nomes: []
 	};
-	// knex.from("socio")
-	// 	.select("nome")
-	// 	.then((rows) => {
-	// 		for (row of rows) {
-	// 			parametros.nomes.push(
-	// 				{
-	// 					nome: `${row['nome']}`
-	// 				}
-	// 			)
-	// 		}
-	// 		console.log(parametros);
-	// 		res.render("entrar", parametros);
-	// 	});
+	knex.from("socio")
+		.select("nome")
+		.where("nome", req.body.user)
+		.then((rows) => {
+			for (row of rows) {
+				parametros.nomes.push(`${row['nome']}`);
+			}
+			res.cookie("username", `${row['nome']}`);
+			res.render("entrar", parametros);
+		});
 });
-
-app.use(express.urlencoded());
-app.use(express.json());
 
 app.post("/consultar-sala", (req, res) => {
 	json = {
 		title: "Consultar sala",
 		sala: req.body.sala,
-		reservas: [],
+		reservas: []
 	};
 
 	knex.from("quadra")
@@ -96,5 +83,9 @@ app.post("/consultar-sala", (req, res) => {
 			}			
 			res.render("consultar_sala", json);
 		});
+});
+
+app.listen(port, () => {
+	console.log("Follow link: http://localhost:3000");
 });
 

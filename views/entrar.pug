@@ -3,10 +3,11 @@ extends layout_main.pug
 block content
 	.content
 		h1#titulo_pagina Login
-		form(method='POST' action="/entrar")#login_form
-			input(type='text' name='user' placeholder="Nome de usuário")
+		form(method='POST' action='/entrar')#login_form
+			input(type='text' name='user' placeholder='Nome de usuário')
 			input(type='password' name='password' placeholder='Senha')
-			input(type='submit' value="Entrar")
-		
-		each nome in nomes
-			li= nome.nome
+			input(type='submit' value='Entrar')
+
+		if nomes != undefined
+			each nome in nomes
+				li= nome

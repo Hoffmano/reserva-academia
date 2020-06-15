@@ -2,15 +2,27 @@
 var knex = require("knex")({
 	client: "mysql",
 	connection: {
-		host: "coccafukuda.ddns.net",
+		host: "192.168.15.10",
 		user: "bdtrab",
 		password: "I6#no#",
 		database: "BDTrab",
 	},
 });
 
-
-
+exports.consultar_login = (user) => {
+	return new Promise((res, rej) => {
+		res(
+			knex.from("socio")
+				.select("nome")
+				.where("nome", user)
+				.first()
+				.then((rows) => {
+					if(rows != undefined) return(rows.nome);
+					else return(undefined);
+				})
+		)
+	})
+};
 
 exports.consultar_disponibilidade = function consultar_disponibilidade(json) {
 	return new Promise((resolve, reject, ) => {

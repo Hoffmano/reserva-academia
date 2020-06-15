@@ -1,6 +1,6 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const dao = require("./dao");
-
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
@@ -18,6 +18,19 @@ app.get("/entrar", (req, res) => {
 	res.render("entrar", { title: "Login" });
 });
 
+app.post("/entrar", urlencodedParser, async (req, res) => {
+	let parametros = {
+		title: "Login",
+	};
+	let username = await dao.consultar_login(req.body.user);
+	if (username != undefined) {
+		res.cookie('username', username);
+		res.render('entrar', {title: "Login", success: true, nome: username});
+	} else {
+		res.render('entrar', {title: "Login", success: false});
+	}
+});
+
 app.get("/cadastrar", (req, res) => {
 	res.render("cadastrar", { title: "Cadastrar" });
 });
@@ -32,23 +45,6 @@ app.get("/agendar", (req, res) => {
 
 app.get("/consultar-socio", (req, res) => {
 	res.render("consultar_socio", { title: "Consultar sóco" });
-});
-
-app.post("/entrar", urlencodedParser, (req, res) => {
-	let parametros = {
-		title: "Login",
-		nomes: []
-	};
-	knex.from("socio")
-		.select("nome")
-		.where("nome", req.body.user)
-		.then((rows) => {
-			for (row of rows) {
-				parametros.nomes.push(`${row['nome']}`);
-			}
-			res.cookie("username", `${row['nome']}`);
-			res.render("entrar", parametros);
-		});
 });
 
 

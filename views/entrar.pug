@@ -8,6 +8,9 @@ block content
 			input(type='password' name='password' placeholder='Senha')
 			input(type='submit' value='Entrar')
 
-		if nomes != undefined
-			each nome in nomes
-				li= nome
+		if success == true
+			if nome != undefined
+				p= "Você agora está logado como " + nome
+		else
+			if success == false
+				p Usuário ou senha incorretos

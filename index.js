@@ -1,14 +1,6 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const knex = require("knex")({
-	client: "mysql",
-	connection: {
-		host: "192.168.15.10",
-		user: "bdtrab",
-		password: "I6#no#",
-		database: "BDTrab",
-	},
-});
+const dao = require("./dao");
+
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
@@ -59,32 +51,21 @@ app.post("/entrar", urlencodedParser, (req, res) => {
 		});
 });
 
-app.post("/consultar-sala", (req, res) => {
-	json = {
-		title: "Consultar sala",
-		sala: req.body.sala,
-		reservas: []
-	};
-
-	knex.from("quadra")
-		.where("quadra.id", Number(req.body.sala))
-		.join("reserva_quadra", "quadra.id", "=", "reserva_quadra.id_quadra")
-		.join("socio", "reserva_quadra.id_socio", "=", "socio.id")
-		.select("nome", "inicio", "duracao")
-		.then((rows) => {
-			for (row of rows) {
-				const data = `${row["inicio"]}`.split(" ")
-				json.reservas.push({
-					socio: `${row["nome"]}`,
-					data: data[2] + " de " + data[1] + 
-					' de ' + data[3] + ' às ' + data[4],
-					duracao: `${row["duracao"]}`,
-				});
-			}			
-			res.render("consultar_sala", json);
-		});
-});
 
 app.listen(port, () => {
 	console.log("Follow link: http://localhost:3000");
 });
+
+
+app.use(express.urlencoded());
+app.use(express.json());
+
+app.post("/consultar-sala", async (req, res) => {
+	let json = {
+		title: "Consultar sala",
+		sala: req.body.sala,
+		reservas: [],
+	}
+	const consultar_disponibilidade_response = await dao.consultar_disponibilidade(json)
+	res.render("consultar_sala", consultar_disponibilidade_response);
+})

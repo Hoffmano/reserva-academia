@@ -88,4 +88,3 @@ app.post("/consultar-sala", (req, res) => {
 app.listen(port, () => {
 	console.log("Follow link: http://localhost:3000");
 });
-

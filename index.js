@@ -51,14 +51,12 @@ app.post("/entrar", (req, res) => {
 app.use(express.urlencoded());
 app.use(express.json());
 
-app.post("/consultar-sala", (req, res) => {
-	json = {
+app.post("/consultar-sala", async (req, res) => {
+	let json = {
 		title: "Consultar sala",
 		sala: req.body.sala,
 		reservas: [],
-	};
-	json = dao.consultar_disponibilidade(json);
-	console.log(json.reservas);
-	
-	res.render("consultar_sala", json);
-});
+	}
+	const consultar_disponibilidade_response = await dao.consultar_disponibilidade(json)
+	res.render("consultar_sala", consultar_disponibilidade_response);
+})

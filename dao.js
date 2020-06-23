@@ -9,8 +9,21 @@ var knex = require("knex")({
 	},
 });
 
-
-
+exports.consultar_login = (username, password) => {
+	return new Promise((res, rej) => {
+		res(
+			knex.from("socio")
+				.select("username")
+				.where("username", username)
+				.andWhere("password", password)
+				.first()
+				.then((rows) => {
+					if(rows != undefined) return(rows.username);
+					else return(undefined);
+				})
+		)
+	})
+};
 
 exports.consultar_disponibilidade = function consultar_disponibilidade(json) {
 	return new Promise((resolve, reject, ) => {

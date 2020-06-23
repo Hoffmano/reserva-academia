@@ -2,22 +2,23 @@
 var knex = require("knex")({
 	client: "mysql",
 	connection: {
-		host: "192.168.15.10",
+		host: "coccafukuda.ddns.net",
 		user: "bdtrab",
 		password: "I6#no#",
 		database: "BDTrab",
 	},
 });
 
-exports.consultar_login = (user) => {
+exports.consultar_login = (username, password) => {
 	return new Promise((res, rej) => {
 		res(
 			knex.from("socio")
-				.select("nome")
-				.where("nome", user)
+				.select("username")
+				.where("username", username)
+				.andWhere("password", password)
 				.first()
 				.then((rows) => {
-					if(rows != undefined) return(rows.nome);
+					if(rows != undefined) return(rows.username);
 					else return(undefined);
 				})
 		)

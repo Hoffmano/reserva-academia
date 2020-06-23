@@ -22,7 +22,7 @@ app.post("/entrar", urlencodedParser, async (req, res) => {
 	let parametros = {
 		title: "Login",
 	};
-	let username = await dao.consultar_login(req.body.user);
+	let username = await dao.consultar_login(req.body.user, req.body.password);
 	if (username != undefined) {
 		res.cookie('username', username);
 		res.render('entrar', {title: "Login", success: true, nome: username});
@@ -44,7 +44,7 @@ app.get("/agendar", (req, res) => {
 });
 
 app.get("/consultar-socio", (req, res) => {
-	res.render("consultar_socio", { title: "Consultar sóco" });
+	res.render("consultar_socio", { title: "Consultar sóico" });
 });
 
 

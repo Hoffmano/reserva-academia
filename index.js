@@ -1,7 +1,6 @@
 const express = require("express");
 const dao = require("./dao");
-const bodyParser = require("body-parser")
-
+const bodyParser = require("body-parser");
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
@@ -10,7 +9,8 @@ const port = 3000;
 
 app.set("view engine", "pug");
 app.use(express.static("public"));
-
+app.use(express.urlencoded());
+app.use(express.json());
 app.get("/", (req, res) => {
 	res.render("index", { title: "Home" });
 });
@@ -38,35 +38,65 @@ app.get("/consultar-socio", (req, res) => {
 app.post("/entrar", urlencodedParser, (req, res) => {
 	let parametros = {
 		title: "Login",
-		nomes: []
+		nomes: [],
 	};
 	knex.from("socio")
 		.select("nome")
 		.where("nome", req.body.user)
 		.then((rows) => {
 			for (row of rows) {
-				parametros.nomes.push(`${row['nome']}`);
+				parametros.nomes.push(`${row["nome"]}`);
 			}
-			res.cookie("username", `${row['nome']}`);
+			res.cookie("username", `${row["nome"]}`);
 			res.render("entrar", parametros);
 		});
 });
-
-
-app.listen(port, () => {
-	console.log("Follow link: http://localhost:3000");
-});
-
-
-app.use(express.urlencoded());
-app.use(express.json());
 
 app.post("/consultar-sala", async (req, res) => {
 	let json = {
 		title: "Consultar sala",
 		sala: req.body.sala,
 		reservas: [],
-	}
-	const consultar_disponibilidade_response = await dao.consultar_disponibilidade(json)
+	};
+	const consultar_disponibilidade_response = await dao.consultar_disponibilidade(
+		json
+	);
 	res.render("consultar_sala", consultar_disponibilidade_response);
-})
+});
+
+app.post("/agendar", (req, res) => {
+	console.log('----------------\nINICIANDO AGENDAMENTO');
+	
+	let json = {
+		title: "Agendar sala",
+		sala: Number(req.body.sala),
+		data: req.body.data,
+		hora: req.body.hora,
+		duracao: req.body.duracao,
+		reservas: [],
+		disponivel: true,
+	};
+
+	dao.consultar_horario(json).then(function (data) {
+		console.log(data);
+		
+		if (data.disponivel) {
+			console.log("DISPONIVEL");
+			return dao.agendar(data);
+		}
+		else {
+			console.log("NAO DISPONIVEL");
+			return false
+		}
+	}).then(function (data1) {
+		if (data1) {
+			console.log('AGENDADO');
+		}
+	});
+
+	res.render("agendar_sala", json);
+});
+
+app.listen(port, () => {
+	console.log("Follow link: http://localhost:3000");
+});

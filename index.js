@@ -102,17 +102,17 @@ app.post("/entrar", urlencodedParser, (req, res) => {
 		});
 });
 
-app.post("/consultar-sala", async (req, res) => {
+app.post("/consultar-socio", (req, res) => {
 	let json = {
 		username: check_username(req),
-		title: "Consultar sala",
-		sala: req.body.sala,
+		title: "Consultar sócio",
+		cpf: req.body.cpf,
 		reservas: [],
 	};
-	const consultar_disponibilidade_response = await dao.consultar_disponibilidade(
-		json
-	);
-	res.render("consultar_sala", consultar_disponibilidade_response);
+	
+	dao.consultar_socio(json).then(function (data) {
+		res.render("consultar_socio", data);
+	});
 });
 
 app.post("/agendar", (req, res) => {
@@ -148,6 +148,20 @@ app.post("/agendar", (req, res) => {
 
 	res.render("agendar_sala", json);
 });
+
+app.post("/consultar-sala", async (req, res) => {
+	let json = {
+		title: "Consultar sala",
+		sala: req.body.sala,
+		reservas: [],
+	};
+	const consultar_disponibilidade_response = await dao.consultar_disponibilidade(
+		json
+	);
+	res.render("consultar_sala", consultar_disponibilidade_response);
+});
+
+
 
 app.listen(port, () => {
 	console.log("Follow link: http://localhost:3000");

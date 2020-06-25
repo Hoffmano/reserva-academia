@@ -133,3 +133,12 @@ td {
 #numero_sala {
 	-moz-appearance: textfield;
 }
+
+#feedback_agendar{
+	text-align: center;
+	margin-top: 5%;
+}
+
+.submit_button{
+	margin-top: 5%;
+}

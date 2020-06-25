@@ -5,7 +5,7 @@ block content
         h1#titulo_pagina Consultar disponibilidade da sala
         form(method='POST')#login_form
             input#numero_sala(type='number' placeholder='Sala' name='sala')
-            input(type='submit' value="Consultar")
+            input.submit_button(type='submit' value="Consultar")
 
         if sala
             h2#identificador_sala Sala: #{sala}

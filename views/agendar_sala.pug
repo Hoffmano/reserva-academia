@@ -11,9 +11,10 @@ block content
             input.date(type='time' name='hora')
             h4 Duração
             input.date(type='time' name='duracao')
-            input(type='submit' value="Agendar")
+            input.submit_button(type='submit' value="Agendar")
 
-        var user = disponivel
-
-        if user.disponivel
-            h2 Sala: #{sala} agendada com sucesso.
+        case disponivel
+            when true
+                h2#feedback_agendar Sala: #{sala} agendada com sucesso.
+            when false
+                h2#feedback_agendar Sala: #{sala} não pode ser agendada.

@@ -65,7 +65,7 @@ app.post("/consultar-sala", async (req, res) => {
 });
 
 app.post("/agendar", (req, res) => {
-	console.log('----------------\nINICIANDO AGENDAMENTO');
+	console.log('\n----------------\nINICIANDO AGENDAMENTO');
 	
 	let json = {
 		title: "Agendar sala",
@@ -77,26 +77,25 @@ app.post("/agendar", (req, res) => {
 		disponivel: true,
 	};
 
-	dao.consultar_horario(json).then(function (data) {
-		console.log(data);
-		
-		if (data.disponivel) {
-			console.log("DISPONIVEL");
-			return dao.agendar(data);
-		}
-		else {
-			console.log("NAO DISPONIVEL");
-			return false
-		}
-	}).then(function (data1) {
-		if (data1) {
-			console.log('AGENDADO');
-		}
-	});
-
-	res.render("agendar_sala", json);
+	dao.consultar_horario(json)
+		.then(function (data) {
+			if (data.disponivel) {
+				console.log("DISPONIVEL");
+				dao.agendar(data);
+				return data
+			} else {
+				console.log("NAO DISPONIVEL");
+				return data;
+			}
+		})
+		.then(function (data1) {
+			if (data1.disponivel) {
+				console.log("AGENDADO");
+			}
+			res.render("agendar_sala", data1);
+		});
 });
 
 app.listen(port, () => {
-	console.log("Follow link: http://localhost:3000");
+	console.log("\n--------------\nACESSE O SITE PELO LINK: http://localhost:3000");
 });

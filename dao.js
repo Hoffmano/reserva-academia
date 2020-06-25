@@ -1,8 +1,7 @@
-
 var knex = require("knex")({
 	client: "mysql",
 	connection: {
-		host: "coccafukuda.ddns.net",
+		host: "192.168.15.10",
 		user: "bdtrab",
 		password: "I6#no#",
 		database: "BDTrab",
@@ -54,3 +53,4 @@ exports.consultar_disponibilidade = function consultar_disponibilidade(json) {
 		)
 	})
 };
+

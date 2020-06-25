@@ -4,6 +4,11 @@ html(lang='pt')
 	include head
 
 	body
-		include header
-		block content
-		include footer
+		if username != undefined
+			include header
+			p= "Usuario: " + username
+			block content
+			include footer
+		else
+			include login_error.pug
+

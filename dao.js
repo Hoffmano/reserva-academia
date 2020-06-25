@@ -1,7 +1,7 @@
 var knex = require("knex")({
 	client: "mysql",
 	connection: {
-		host: "coccafukuda.ddns.net",
+		host: "192.168.15.10",
 		user: "bdtrab",
 		password: "I6#no#",
 		database: "BDTrab",
@@ -153,6 +153,23 @@ exports.consultar_horario = function consultar_horario(input_data) {
 	});
 };
 
+exports.consultar_login = (username, password) => {
+	return new Promise((res, rej) => {
+		res(
+			knex
+				.from("socio")
+				.select("username")
+				.where("username", username)
+				.andWhere("password", password)
+				.first()
+				.then((rows) => {
+					if (rows != undefined) return rows.username;
+					else return undefined;
+				})
+		);
+	});
+};
+
 exports.agendar = function agendar(json) {
 	return new Promise((resolve, reject) => {
 		resolve(
@@ -169,3 +186,4 @@ exports.agendar = function agendar(json) {
 		);
 	});
 };
+

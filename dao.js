@@ -8,6 +8,23 @@ var knex = require("knex")({
 	},
 });
 
+exports.consultar_login = (username, password) => {
+	return new Promise((res, rej) => {
+		res(
+			knex
+				.from("socio")
+				.select("username")
+				.where("username", username)
+				.andWhere("password", password)
+				.first()
+				.then((rows) => {
+					if (rows != undefined) return rows.username;
+					else return undefined;
+				})
+		);
+	});
+};
+
 exports.consultar_disponibilidade = function consultar_disponibilidade(json) {
 	return new Promise((resolve, reject) => {
 		resolve(
@@ -118,12 +135,19 @@ exports.consultar_horario = function consultar_horario(input_data) {
 					console.log(scheduled_start);
 					console.log(date_reserva_inicio);
 					console.log();
-					
-					
 
-					if (date_reserva_inicio.getFullYear() === scheduled_start.getFullYear()) {
-						if (date_reserva_inicio.getMonth() === scheduled_start.getMonth()) {
-							if (date_reserva_inicio.getDay() === scheduled_start.getDay()) {
+					if (
+						date_reserva_inicio.getFullYear() ===
+						scheduled_start.getFullYear()
+					) {
+						if (
+							date_reserva_inicio.getMonth() ===
+							scheduled_start.getMonth()
+						) {
+							if (
+								date_reserva_inicio.getDay() ===
+								scheduled_start.getDay()
+							) {
 								if (
 									scheduled_start < date_reserva_fim &&
 									scheduled_end >= date_reserva_fim
@@ -147,25 +171,8 @@ exports.consultar_horario = function consultar_horario(input_data) {
 						}
 					}
 				}
-				return input_data
+				return input_data;
 			})
-		);
-	});
-};
-
-exports.consultar_login = (username, password) => {
-	return new Promise((res, rej) => {
-		res(
-			knex
-				.from("socio")
-				.select("username")
-				.where("username", username)
-				.andWhere("password", password)
-				.first()
-				.then((rows) => {
-					if (rows != undefined) return rows.username;
-					else return undefined;
-				})
 		);
 	});
 };
@@ -186,4 +193,3 @@ exports.agendar = function agendar(json) {
 		);
 	});
 };
-

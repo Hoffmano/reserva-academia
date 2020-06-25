@@ -191,22 +191,24 @@ exports.consultar_socio = function consultar_socio(json) {
 		resolve(
 			knex
 				.from("reserva_quadra")
-				.where("socio.id", json.cpf)
+				.where("socio.cpf", json.cpf)
 				.join(
-					"reserva_quadra",
+					"quadra",
 					"reserva_quadra.id_quadra",
 					"=",
 					"quadra.id",
 				)
 				.join("socio", "reserva_quadra.id_socio", "=", "socio.id")
-				.select("numero_quadra", "inicio", "duracao")
+				.select("numero_quadra", "inicio", "duracao","nome")
 				.then((rows) => {
 					for (row of rows) {
+						
 						const data = `${row["inicio"]}`.split(" ");
 						const hora = data[4].split(":");
 						const duracao = row["duracao"].split(":");
 
 						json.reservas.push({
+							nome: `${row["nome"]}`,
 							sala: `${row["numero_quadra"]}`,
 							data:
 								data[2] +
@@ -219,7 +221,7 @@ exports.consultar_socio = function consultar_socio(json) {
 							duracao: `${row["duracao"]}`,
 						});
 					}
-					cosole.log(json)
+					console.log(json)
 					return json;
 				})
 		);

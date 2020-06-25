@@ -8,8 +8,9 @@ block content
             input(type='submit' value="Consultar")
         
         if cpf
-            h2#identificador_sala Sócio: #{nome}
-        
+            h2#identificador_sala Sócio: #{reservas[0].nome}.
+        else 
+            h2#identificador_sala Sócio não possui reserva. 
         if reservas
             table.table
                 tr.row

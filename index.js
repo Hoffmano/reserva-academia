@@ -78,12 +78,6 @@ app.get("/agendar", (req, res) => {
 	});
 });
 
-app.get("/consultar-socio", (req, res) => {
-	res.render("consultar_socio", {
-		username: check_username(req),
-		title: "Consultar socio",
-	});
-});
 
 app.post("/entrar", urlencodedParser, async (req, res) => {
     let username = await dao.consultar_login(req.body.user, req.body.password);
@@ -103,7 +97,12 @@ app.post("/entrar", urlencodedParser, async (req, res) => {
         });
     }
 });
-
+app.get("/consultar-socio", (req, res) => {
+    res.render("consultar_socio", {
+        username: check_username(req),
+        title: "Consultar sócio",
+    });
+});
 app.post("/consultar-socio", (req, res) => {
 	let json = {
 		username: check_username(req),
@@ -153,6 +152,7 @@ app.post("/agendar", (req, res) => {
 
 app.post("/consultar-sala", async (req, res) => {
 	let json = {
+		username: check_username(req),
 		title: "Consultar sala",
 		sala: req.body.sala,
 		reservas: [],

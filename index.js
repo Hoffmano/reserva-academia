@@ -75,15 +75,6 @@ app.get("/consultar-sala", (req, res) => {
 	});
 });
 
-app.post("/consultar-sala", urlencodedParser, async (req, res) => {
-	let json = {
-		title: "Consultar sala",
-		sala: req.body.sala,
-		reservas: [],
-	};
-	res.render("consultar_sala", await dao.consultar_disponibilidade(json));
-});
-
 app.get("/agendar", (req, res) => {
 	res.render("agendar_sala", {
 		username: check_username(req),
@@ -117,6 +108,7 @@ app.post("/entrar", urlencodedParser, (req, res) => {
 
 app.post("/consultar-sala", async (req, res) => {
 	let json = {
+		username: check_username(req),
 		title: "Consultar sala",
 		sala: req.body.sala,
 		reservas: [],
@@ -131,6 +123,7 @@ app.post("/agendar", (req, res) => {
 	console.log("\n----------------\nINICIANDO AGENDAMENTO");
 
 	let json = {
+		username: check_username(req),
 		title: "Agendar sala",
 		sala: Number(req.body.sala),
 		data: req.body.data,

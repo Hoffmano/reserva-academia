@@ -24,6 +24,7 @@ exports.consultar_login = (username, password) => {
 		);
 	});
 };
+
 exports.consultar_disponibilidade = function consultar_disponibilidade(json) {
 	return new Promise((resolve, reject) => {
 		resolve(
@@ -174,7 +175,7 @@ exports.agendar = function agendar(json) {
 		resolve(
 			knex("reserva_quadra")
 				.insert({
-					id_socio: 125,
+					id_socio: json.socio_id,
 					id_quadra: json.sala,
 					inicio: `${json.reserva.ano}-${json.reserva.mes}-${json.reserva.dia} ${json.reserva.hora}:${json.reserva.minuto}:00`,
 					duracao: `${json.reserva.hora_duracao}:${json.reserva.minuto_duracao}:00`,
@@ -202,7 +203,7 @@ exports.consultar_socio = function consultar_socio(json) {
 				.select("numero_quadra", "inicio", "duracao","nome")
 				.then((rows) => {
 					for (row of rows) {
-						
+						json.finded = true
 						const data = `${row["inicio"]}`.split(" ");
 						const hora = data[4].split(":");
 						const duracao = row["duracao"].split(":");

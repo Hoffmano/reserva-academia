@@ -71,12 +71,7 @@ app.get("/consultar-sala", (req, res) => {
 	});
 });
 
-app.get("/agendar", (req, res) => {
-	res.render("agendar_sala", {
-		username: check_username(req),
-		title: "Agendar",
-	});
-});
+
 
 
 app.post("/entrar", urlencodedParser, async (req, res) => {
@@ -99,9 +94,10 @@ app.post("/entrar", urlencodedParser, async (req, res) => {
 });
 app.get("/consultar-socio", (req, res) => {
     res.render("consultar_socio", {
-        username: check_username(req),
-        title: "Consultar sócio",
-    });
+		username: check_username(req),
+		title: "Consultar sócio",
+		finded: false,
+	});
 });
 app.post("/consultar-socio", (req, res) => {
 	let json = {
@@ -109,10 +105,18 @@ app.post("/consultar-socio", (req, res) => {
 		title: "Consultar sócio",
 		cpf: req.body.cpf,
 		reservas: [],
+		finded: false,
 	};
 	
 	dao.consultar_socio(json).then(function (data) {
 		res.render("consultar_socio", data);
+	});
+});
+
+app.get("/agendar", (req, res) => {
+	res.render("agendar_sala", {
+		username: check_username(req),
+		title: "Agendar",
 	});
 });
 
@@ -122,6 +126,7 @@ app.post("/agendar", (req, res) => {
 	let json = {
 		username: check_username(req),
 		title: "Agendar sala",
+		socio: Number(req.body.socio_id),
 		sala: Number(req.body.sala),
 		data: req.body.data,
 		hora: req.body.hora,

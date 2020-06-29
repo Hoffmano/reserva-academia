@@ -7,10 +7,10 @@ block content
             input(type='text' placeholder='CPF' name='cpf')
             input(type='submit' value="Consultar")
         
-        if cpf
+        if finded == true
             h2#identificador_sala Sócio: #{reservas[0].nome}.
         else 
-            h2#identificador_sala Sócio não possui reserva. 
+            h2#identificador_sala Sócio não possui reserva.
         if reservas
             table.table
                 tr.row

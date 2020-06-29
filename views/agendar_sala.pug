@@ -4,6 +4,7 @@ block content
     .content
         h1#titulo_pagina Agendar
         form(method='POST')#login_form
+            input(type='text' placeholder='CPF do sócio' name='socio')
             input(type='text' placeholder='Sala' name='sala')
             h4.date Data
             input.date(type='date' placeholder="Data" name='data')
@@ -13,8 +14,7 @@ block content
             input.date(type='time' name='duracao')
             input.submit_button(type='submit' value="Agendar")
 
-        case disponivel
-            when true
-                h2#feedback_agendar Sala: #{sala} agendada com sucesso.
-            when false
-                h2#feedback_agendar Sala: #{sala} não pode ser agendada.
+        if disponivel == true
+            h2#feedback_agendar Sala: #{sala} agendada com sucesso.
+        else
+            h2#feedback_agendar Sala: #{sala} não pode ser agendada.

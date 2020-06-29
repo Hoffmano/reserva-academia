@@ -62,8 +62,10 @@ a {
 }
 
 #footer {
+	background-color: #351313;
+	margin-top: 5%;
+	bottom: 5vh;
 	position: absolute;
-	bottom: 1%;
 	left: 50%;
 	transform: translate(-50%);
 }
@@ -141,4 +143,13 @@ td {
 
 .submit_button{
 	margin-top: 5%;
+}
+
+#username{
+	margin-left: 5%;
+	background-color: #131212;
+	width: 25%;
+	font-weight: bold;
+	border-radius: 0 0px 10px 10px;
+	text-align: center;
 }

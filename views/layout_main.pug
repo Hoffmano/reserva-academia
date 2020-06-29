@@ -6,9 +6,8 @@ html(lang='pt')
 	body
 		if username != undefined
 			include header
-			p= "Usuario: " + username
+			p#username= "Usuário: " + username
 			block content
-			include footer
 		else
 			include login_error.pug
 

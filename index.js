@@ -14,7 +14,6 @@ app.use(express.static("public"));
 app.use(express.urlencoded());
 app.use(express.json());
 
-
 let check_username = (req) => {
 	return req.cookies != undefined ? req.cookies.username : undefined;
 };
@@ -71,29 +70,26 @@ app.get("/consultar-sala", (req, res) => {
 	});
 });
 
-
-
-
 app.post("/entrar", urlencodedParser, async (req, res) => {
-    let username = await dao.consultar_login(req.body.user, req.body.password);
-    if (username != undefined) {
-        res.cookie("username", username);
-        res.render("entrar", {
-            username: username,
-            title: "Login",
-            success: true,
-            nome: username,
-        });
-    } else {
-        res.render("entrar", {
-            username: username,
-            title: "Login",
-            success: false,
-        });
-    }
+	let username = await dao.consultar_login(req.body.user, req.body.password);
+	if (username != undefined) {
+		res.cookie("username", username);
+		res.render("entrar", {
+			username: username,
+			title: "Login",
+			success: true,
+			nome: username,
+		});
+	} else {
+		res.render("entrar", {
+			username: username,
+			title: "Login",
+			success: false,
+		});
+	}
 });
 app.get("/consultar-socio", (req, res) => {
-    res.render("consultar_socio", {
+	res.render("consultar_socio", {
 		username: check_username(req),
 		title: "Consultar sócio",
 		finded: false,
@@ -107,7 +103,7 @@ app.post("/consultar-socio", (req, res) => {
 		reservas: [],
 		finded: false,
 	};
-	
+
 	dao.consultar_socio(json).then(function (data) {
 		res.render("consultar_socio", data);
 	});
@@ -117,6 +113,7 @@ app.get("/agendar", (req, res) => {
 	res.render("agendar_sala", {
 		username: check_username(req),
 		title: "Agendar",
+		tried: false,
 	});
 });
 
@@ -126,31 +123,31 @@ app.post("/agendar", (req, res) => {
 	let json = {
 		username: check_username(req),
 		title: "Agendar sala",
-		socio: Number(req.body.socio_id),
+		socio: Number(req.body.socio),
 		sala: Number(req.body.sala),
 		data: req.body.data,
 		hora: req.body.hora,
 		duracao: req.body.duracao,
 		reservas: [],
+		tried: true,
 		disponivel: true,
 	};
 
-	dao.consultar_horario(json).then(function (data) {
-		console.log(data);
-		
-		if (data.disponivel) {
-			console.log("DISPONIVEL");
-			return dao.agendar(data);
-		}
-		else {
-			console.log("NAO DISPONIVEL");
-			return false
-		}
-	}).then(function (data1) {
-		if (data1) {
-			console.log('AGENDADO');
-		}
-	});
+	dao.consultar_horario(json)
+		.then(function (data) {
+			if (data.disponivel) {
+				console.log("DISPONIVEL");
+				return dao.agendar(data);
+			} else {
+				console.log("NAO DISPONIVEL");
+				return false;
+			}
+		})
+		.then(function(input_data){
+			if (input_data) {
+				console.log("AGENDADO");
+			}
+		});
 
 	res.render("agendar_sala", json);
 });
@@ -167,8 +164,6 @@ app.post("/consultar-sala", async (req, res) => {
 	);
 	res.render("consultar_sala", consultar_disponibilidade_response);
 });
-
-
 
 app.listen(port, () => {
 	console.log("Follow link: http://localhost:3000");

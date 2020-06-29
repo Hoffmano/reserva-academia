@@ -14,7 +14,8 @@ block content
             input.date(type='time' name='duracao')
             input.submit_button(type='submit' value="Agendar")
 
-        if disponivel == true
-            h2#feedback_agendar Sala: #{sala} agendada com sucesso.
-        else
-            h2#feedback_agendar Sala: #{sala} não pode ser agendada.
+        if tried == true
+            if disponivel == true
+                h2#feedback_agendar Sala: #{sala} agendada com sucesso.
+            else
+                h2#feedback_agendar Sala: #{sala} não pode ser agendada.

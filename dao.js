@@ -156,10 +156,6 @@ exports.consultar_horario = function consultar_horario(input_data) {
 							Number(hora[1]) + Number(duracao[1])
 						);
 
-						console.log(scheduled_start);
-						console.log(date_reserva_inicio);
-						console.log();
-
 						if (
 							date_reserva_inicio.getFullYear() ===
 							scheduled_start.getFullYear()
@@ -220,14 +216,51 @@ exports.agendar = function agendar(json) {
 	});
 };
 
-exports.consultar_socio = function consultar_socio(json) {
+exports.get_id = function get_id(json) {
 	return new Promise((resolve, reject) => {
 		resolve(
 			knex
-				.from("reserva_quadra")
+				.from("socio")
+				.where("socio.cpf", json.socio)
+				.first()
+				.then((socio) => {
+					json.socio = `${socio["id"]}`;
+					return json;
+				})
+		);
+	});
+};
+
+exports.get_id_2 = function get_id_2(json) {
+	return new Promise((resolve, reject) => {
+		resolve(
+			knex
+				.from("socio")
 				.where("socio.cpf", json.cpf)
+				.first()
+				.then((socio) => {
+					json.cpf = `${socio["id"]}`;
+					return json;
+				})
+		);
+	});
+};
+
+exports.consultar_socio = function consultar_socio(json) {
+	return new Promise((resolve, reject) => {
+		console.log("consultar socio");
+
+		resolve(
+			knex
+				.from("socio")
+				.where("socio.id", json.cpf)
+				.join(
+					"reserva_quadra",
+					"socio.id",
+					"=",
+					"reserva_quadra.id_socio"
+				)
 				.join("quadra", "reserva_quadra.id_quadra", "=", "quadra.id")
-				.join("socio", "reserva_quadra.id_socio", "=", "socio.id")
 				.select("numero_quadra", "inicio", "duracao", "nome")
 				.then((rows) => {
 					for (row of rows) {
@@ -250,7 +283,6 @@ exports.consultar_socio = function consultar_socio(json) {
 							duracao: `${row["duracao"]}`,
 						});
 					}
-					console.log(json);
 					return json;
 				})
 		);

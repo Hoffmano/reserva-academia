@@ -99,13 +99,15 @@ app.post("/consultar-socio", (req, res) => {
 	let json = {
 		username: check_username(req),
 		title: "Consultar sócio",
-		cpf: req.body.cpf,
+		cpf: Number(req.body.cpf),
 		reservas: [],
 		finded: false,
 	};
 
-	dao.consultar_socio(json).then(function (data) {
-		res.render("consultar_socio", data);
+	dao.get_id_2(json).then(function (json) {
+		dao.consultar_socio(json).then(function (data) {
+			res.render("consultar_socio", data);
+		});
 	});
 });
 
@@ -133,19 +135,15 @@ app.post("/agendar", (req, res) => {
 		disponivel: true,
 	};
 
-	dao.consultar_horario(json)
+	dao.get_id(json)
+		.then(function (data) {
+			return dao.consultar_horario(data);
+		})
 		.then(function (data) {
 			if (data.disponivel) {
-				console.log("DISPONIVEL");
 				return dao.agendar(data);
 			} else {
-				console.log("NAO DISPONIVEL");
 				return false;
-			}
-		})
-		.then(function(input_data){
-			if (input_data) {
-				console.log("AGENDADO");
 			}
 		});
 
@@ -153,6 +151,7 @@ app.post("/agendar", (req, res) => {
 });
 
 app.post("/consultar-sala", async (req, res) => {
+	a = Date.now();
 	let json = {
 		username: check_username(req),
 		title: "Consultar sala",
@@ -163,6 +162,9 @@ app.post("/consultar-sala", async (req, res) => {
 		json
 	);
 	res.render("consultar_sala", consultar_disponibilidade_response);
+	b = Date.now();
+
+	console.log(b - a);
 });
 
 app.listen(port, () => {

@@ -141,6 +141,8 @@ app.post("/agendar", (req, res) => {
 		})
 		.then(function (data) {
 			if (data.disponivel) {
+				b = Date.now();
+				console.log(b - a);
 				return dao.agendar(data);
 			} else {
 				return false;
@@ -148,8 +150,6 @@ app.post("/agendar", (req, res) => {
 		});
 
 	res.render("agendar_sala", json);
-	b = Date.now();
-	console.log(b - a);
 });
 
 app.post("/consultar-sala", async (req, res) => {

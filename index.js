@@ -120,7 +120,7 @@ app.get("/agendar", (req, res) => {
 });
 
 app.post("/agendar", (req, res) => {
-	console.log("\n----------------\nINICIANDO AGENDAMENTO");
+	a = Date.now();
 
 	let json = {
 		username: check_username(req),
@@ -141,6 +141,8 @@ app.post("/agendar", (req, res) => {
 		})
 		.then(function (data) {
 			if (data.disponivel) {
+				b = Date.now();
+				console.log(b - a);
 				return dao.agendar(data);
 			} else {
 				return false;

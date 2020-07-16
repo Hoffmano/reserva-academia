@@ -259,13 +259,13 @@ exports.consultar_socio = function consultar_socio(json) {
 			knex
 				.from("socio")
 				.where("socio.id", json.cpf)
-				.join(
+				.crossJoin(
 					"reserva_quadra",
 					"socio.id",
 					"=",
 					"reserva_quadra.id_socio"
 				)
-				.join("quadra", "reserva_quadra.id_quadra", "=", "quadra.id")
+				.crossJoin("quadra", "reserva_quadra.id_quadra", "=", "quadra.id")
 				.select("numero_quadra", "inicio", "duracao", "nome")
 				.then((rows) => {
 					for (row of rows) {

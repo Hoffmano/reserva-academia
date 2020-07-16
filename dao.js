@@ -251,17 +251,8 @@ exports.consultar_socio = function consultar_socio(json) {
 		console.log("consultar socio");
 
 		resolve(
-			knex
-				.from("socio")
-				.where("socio.id", json.cpf)
-				.join(
-					"reserva_quadra",
-					"socio.id",
-					"=",
-					"reserva_quadra.id_socio"
-				)
-				.join("quadra", "reserva_quadra.id_quadra", "=", "quadra.id")
-				.select("numero_quadra", "inicio", "duracao", "nome")
+			knex.raw( 'select(numero_quadra, inicio, duração, nome) from `socio` where id= json.cpf join `reserva_quadra` on `socio`.`id` = `contacts`.`user_id` join quadra on `reserva_quadra.id_quadra`= `quadra.id`')
+
 				.then((rows) => {
 					for (row of rows) {
 						json.finded = true;

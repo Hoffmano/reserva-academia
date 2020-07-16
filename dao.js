@@ -31,13 +31,10 @@ exports.consultar_disponibilidade = function consultar_disponibilidade(json) {
 			knex
 				.from("quadra")
 				.where("quadra.id", json.sala)
-				.join(
-					"reserva_quadra",
-					"quadra.id",
-					"=",
-					"reserva_quadra.id_quadra"
-				)
-				.join("socio", "reserva_quadra.id_socio", "=", "socio.id")
+				.joinRaw("join reserva_quadra")
+				.whereRaw("quadra.id = reserva_quadra.id_quadra")
+				.joinRaw("join socio")
+				.whereRaw("reserva_quadra.id_socio = socio.id")
 				.select("nome", "inicio", "duracao")
 				.then((rows) => {
 					for (row of rows) {

@@ -84,8 +84,13 @@ exports.consultar_horario = function consultar_horario(input_data) {
 		resolve(
 			knex
 				.from("reserva_quadra")
-				.join("quadra", "reserva_quadra.id_quadra", "=", "quadra.id")
-				.join("socio", "reserva_quadra.id_socio", "=", "socio.id")
+				.crossJoin(
+					"quadra",
+					"reserva_quadra.id_quadra",
+					"=",
+					"quadra.id"
+				)
+				.crossJoin("socio", "reserva_quadra.id_socio", "=", "socio.id")
 				.where("socio.cpf", input_data.socio)
 				.where("quadra.numero_quadra", input_data.sala)
 				.then((rows) => {
